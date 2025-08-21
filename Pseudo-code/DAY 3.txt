@@ -1,34 +1,60 @@
-DAY 3
-INHERITANCE
-Start
-define class Order{
-	ATTRIBUTE id
-	ATTRIBUTE order_number
-CONSTRUCTOR(id,order_number){
-	SET this.id=id
-	SET order_number=order_number
-}
-}
+START
+CLASS Customer
+    ATTRIBUTES: cName, address, phone
+     
+    CONSTRUCTOR(name,address,phone)
+     SET this.name=name
+     SET this.address=adDress
+     SET this.phone=phone
 
-define class Customer extends Order{
-	ATTRIBUTE name
-CONStRUCTOR Customer(id,order_number,name){
-	super(id,order_number)
-	this.name=name
-}	
-}
-define class Restaurant extends Order{
-	ATTRIBUTE restautant_name
-CONSTRUCTOR Restaurant(id,order_number,restaurant_name){
-	super(id,order_number)
-	this.restaurant_name=restaurant_name
-}
-}
-define class DeliveryBoy extends Order{
-	ATTRIBUTE name
-CONStRUCTOR DeliveryBoy(id,order_number,name){
-	super(id,order_number)
-	this.name=name
-}	
-}
+    METHOD getDetails():
+	PRINT name+" "+address+" "+phone
+
+CLASS Restaurant EXTENDS CUSTOMER
+    ATTRIBUTES: rName, location, menu
+	ATTRIBUTE Customer customer
+
+    CONSTRUCTOR(rName,location,menu,customer)
+	SET this.rName=rName
+	SET this.location = location
+	SET this.menu = menu
+	SET this.customer = customer
+    METHOD getMenu():
+	PRINT rName"+" "+ location +" "+ menu +" "+ customer
+
+CLASS DeliveryBoy
+    ATTRIBUTES: name, id, phone
+	ATTRIBUTES Restaurant restaurant
+    
+    CONSTRUCTOR(name, id, phone, restaurant)
+	SET this.name = name
+	SET this.id = id
+	SET this.phone = phone
+	SET this.restaurant = restaurant
+    METHOD getDetails():
+	PRINT name+" "+id+" "+phone+" "+restaurant
+
+CLASS Order
+    ATTRIBUTES: customer (Customer), restaurant (Restaurant), deliveryBoy (DeliveryBoy), items, totalPrice
+    CONSTRUCTOR(customer, restaurant, deliveryBoy, items, totalPrice)
+	SET this.customer = customer
+	SET this.restaurant = restaurant
+	SET this.deliverBoy = deliveryBoy
+	SET this.items = items
+	SET this.totalPrice = totalPrice
+    METHOD placeOrder():
+	PRINT customer+" "+ restaurant+" "+ items +" "+ totalPrice
+    METHOD showOrderDetails()
+	PPRINT customer+" "+ restaurant+" "+ deliveryBoy+" "+ items +" "+ totalPrice
+
+MAIN
+    CREATE customer = new Customer(name, address, phone)
+    CREATE restaurant = new Restaurant(name, location, menu, customer)
+    CREATE deliveryBoy = new DeliveryBoy(name, id, phone, restaurant)
+
+    CREATE order = new Order(customer, restaurant, deliveryBoy, items, totalPrice)
+
+    CALL order.placeOrder()
+    CALL order.showOrderDetails()
+
 END
